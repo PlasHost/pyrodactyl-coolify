@@ -2,6 +2,7 @@
 # slogan: Pyrodactyl is an open, secure, and scalable servers platform. It's the world's best Pterodactyl panel with incredible performance and unmatched features.
 # tags: game, game server, management, panel, minecraft
 # logo: svgs/pyrodactyl.png
+# port: 80
 
 services:
   pyrodactyl:
