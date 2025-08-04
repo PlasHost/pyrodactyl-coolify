@@ -3,4 +3,4 @@
 
 ### Links
 Wiki: [**here**](https://github.com/PlasHost/pyrodactyl-coolify/wiki)<br></br>
-Installation Specific Wiki: [**here**](https://github.com/PlasHost/filebrowser-coolify/wiki/Installation)
+Installation Specific Wiki: [**here**](https://github.com/PlasHost/pyrodactyl-coolify/wiki/Installation)
