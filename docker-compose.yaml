@@ -58,9 +58,9 @@ services:
     environment:
       # Below are MariaDB specific EMV VARS.
       - MARIADB_ROOT_PASSWORD=${SERVICE_PASSWORD_DATABASE}
-      - MARIADB_DATABASE=${SERVICE_PASSWORD_DATABASE}
+      - MARIADB_DATABASE=$DB_DATABASE
       - MARIADB_USER=$DB_USERNAME
-      - MARIADB_PASSWORD=$DB_PASSWORD
+      - MARIADB_PASSWORD=${SERVICE_PASSWORD_DATABASE}
     volumes:
       -
         type: bind
