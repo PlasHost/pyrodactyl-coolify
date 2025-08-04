@@ -40,7 +40,7 @@ services:
       - DB_PORT=${DB_PORT:-3306}
       - DB_DATABASE=${DB_DATABASE:-pyrodactyl}
       - DB_USERNAME=${DB_USERNAME:-pyrodactyl}
-      - DB_PASSWORD=$SERVICE_PASSWORD_DATABASE
+      - DB_PASSWORD=${SERVICE_PASSWORD_DATABASE}
       
       - REDIS_HOST=${REDIS_HOST:-redis}
       - REDIS_USERNAME=${REDIS_USERNAME:-default}
@@ -58,7 +58,7 @@ services:
     environment:
       # Below are MariaDB specific EMV VARS.
       - MARIADB_ROOT_PASSWORD=$DB_PASSWORD
-      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_DATABASE=$DB_DATABASE
       - MARIADB_USER=$DB_USERNAME
       - MARIADB_PASSWORD=$DB_PASSWORD
     volumes:
