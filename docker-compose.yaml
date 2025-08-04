@@ -8,44 +8,64 @@ services:
   pyrodactyl:
     image: 'ghcr.io/pyrohost/pyrodactyl:main'
     volumes:
-      - 'pyrovar:/app/var/'
-      - 'pyronginx:/etc/nginx/http.d/'
-      - 'pyrologs:/app/storage/logs'
+      - type: bind
+        source: ./app/var/
+        target: /pyrodactyl
+        is_directory: true
+      - type: bind
+        source: ./etc/nginx/http.d/
+        target: /nginx
+        is_directory: true
+      - type: bind
+        source: ./app/storage/logs
+        target: /logs
+        is_directory: true
     environment:
+      # Below are Pyrodactyl specific EMV VARS.
       - APP_ENV=production
       - APP_ENVIRONMENT_ONLY=false
       - CACHE_DRIVER=redis
       - SESSION_DRIVER=redis
       - QUEUE_DRIVER=redis
-      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_HOST=host.docker.internal
       - REDIS_PORT=6379
-      - REDIS_USERNAME=default
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USERNAME=${SERVICE_USER_REDIS}
+      - REDIS_PASSWORD=${SERVICE_PASSWORD_REDIS}
       - DB_CONNECTION=mariadb
-      - DB_HOST=database
+      - DB_HOST=host.docker.internal
       - DB_PORT=3306
       - DB_DATABASE=${DB_DATABASE:-pyrodactyl}
       - DB_USERNAME=${DB_USERNAME:-pyrodactyl}
       - DB_PASSWORD=${SERVICE_PASSWORD_DATABASE}
       - HASHIDS_LENGTH=${HASHIDS_LENGTH:-8}
-      - HASHIDS_SALT=${SERVICE_HASHIDS_SALT}
-      - APP_URL=${APP_URL}
+      - HASHIDS_SALT=${REALBASE64}
+      - APP_URL=${SERVICE_FQDN_PYRODACTYL}
       - APP_TIMEZONE=${APP_TIMEZONE:-UTC}
       - APP_THEME=${APP_THEME:-pterodactyl}
-      - SERVICE_FQDN_PYRODACTYL=${SERVICE_FQDN_PYRODACTYL}
 
   database:
     image: 'mariadb:10.5'
     environment:
+      # Below are MariaDB specific EMV VARS.
       - MARIADB_ROOT_PASSWORD=${SERVICE_PASSWORD_DATABASE_ROOT}
       - MARIADB_DATABASE=${DB_DATABASE:-pyrodactyl}
       - MARIADB_USER=${DB_USERNAME:-pyrodactyl}
       - MARIADB_PASSWORD=${SERVICE_PASSWORD_DATABASE}
     volumes:
-      - 'database:/var/lib/mysql'
+      - type: bind
+        source: ./var/lib/mysql
+        target: /database
+        is_directory: true
 
   redis:
     image: 'redis:alpine'
-    restart: always
+    environment:
+      # Below are Redis specific EMV VARS.
+      - REDIS_PORT=6379
+      - REDIS_USERNAME=${SERVICE_USER_REDIS}
+      - REDIS_PASSWORD=${SERVICE_PASSWORD_REDIS}
     volumes:
-      - 'redis:/data'
+      - type: bind
+        source: ./redis
+        target: /redis
+        is_directory: true
