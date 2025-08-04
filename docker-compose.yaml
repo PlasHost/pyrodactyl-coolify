@@ -8,18 +8,21 @@ services:
   pyrodactyl:
     image: 'ghcr.io/pyrohost/pyrodactyl:main'
     volumes:
-      - type: bind
-        source: ./app/var/
-        target: /pyrodactyl
+      -
+        type: bind
+        source: ./pterodactyl/var
+        target: /app/var
         is_directory: true
-      - type: bind
-        source: ./etc/nginx/http.d/
-        target: /nginx
+      -
+        type: bind
+        source: ./nginx
+        target: /etc/nginx/http.d
         is_directory: true
-      - type: bind
-        source: ./app/storage/logs
-        target: /logs
-        is_directory: true
+      - 
+        type: bind
+        source: ./pterodactyl/logs
+        target: /app/storage/logs
+        is_directory: false
     environment:
       - SERVICE_FQDN_PYRODACTYL=${SERVICE_FQDN_PYRODACTYL}
       
@@ -59,9 +62,10 @@ services:
       - MARIADB_USER=${DB_USERNAME:-pyrodactyl}
       - MARIADB_PASSWORD=${SERVICE_PASSWORD_DATABASE}
     volumes:
-      - type: bind
-        source: ./var/lib/mysql
-        target: /database
+      -
+        type: bind
+        source: ./database
+        target: /var/lib/mysql
         is_directory: true
 
   redis:
@@ -72,7 +76,8 @@ services:
       - REDIS_USERNAME=${SERVICE_USER_REDIS}
       - REDIS_PASSWORD=${SERVICE_PASSWORD_REDIS}
     volumes:
-      - type: bind
+      -
+        type: bind
         source: ./redis
-        target: /redis
+        target: /data
         is_directory: true
