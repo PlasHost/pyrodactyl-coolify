@@ -40,11 +40,11 @@ services:
       - DB_PORT=${DB_PORT:-3306}
       - DB_DATABASE=${DB_DATABASE:-pyrodactyl}
       - DB_USERNAME=${DB_USERNAME:-pyrodactyl}
-      - DB_PASSWORD=${SERVICE_PASSWORD_DATABASE}
+      - DB_PASSWORD=${DB_PASSWORD:-$SERVICE_PASSWORD_DATABASE}
       
       - REDIS_HOST=${REDIS_HOST:-redis}
-      - REDIS_USERNAME=${SERVICE_USER_REDIS}
-      - REDIS_PASSWORD=${SERVICE_PASSWORD_REDIS}
+      - REDIS_USERNAME=${REDIS_USERNAME:-default}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-null}
       - REDIS_PORT=6379
 
       - CACHE_DRIVER=redis
@@ -57,10 +57,10 @@ services:
     image: 'mariadb:10.5'
     environment:
       # Below are MariaDB specific EMV VARS.
-      - MARIADB_ROOT_PASSWORD=${SERVICE_PASSWORD_DATABASE}
-      - MARIADB_DATABASE=${DB_DATABASE:-pyrodactyl}
-      - MARIADB_USER=${DB_USERNAME:-pyrodactyl}
-      - MARIADB_PASSWORD=${SERVICE_PASSWORD_DATABASE}
+      - MARIADB_ROOT_PASSWORD=$DB_PASSWORD
+      - MARIADB_DATABASE=$DB_DATABASE
+      - MARIADB_USER=$DB_USERNAME
+      - MARIADB_PASSWORD=$DB_PASSWORD
     volumes:
       -
         type: bind
@@ -73,8 +73,8 @@ services:
     environment:
       # Below are Redis specific EMV VARS.
       - REDIS_PORT=6379
-      - REDIS_USERNAME=${SERVICE_USER_REDIS}
-      - REDIS_PASSWORD=${SERVICE_PASSWORD_REDIS}
+      - REDIS_USERNAME=$REDIS_USERNAME
+      - REDIS_PASSWORD=$REDIS_PASSWORD
     volumes:
       -
         type: bind
