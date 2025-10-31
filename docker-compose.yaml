@@ -54,7 +54,7 @@ services:
       - APP_SERVICE_AUTHOR=${APP_SERVICE_AUTHOR:-panel@pyrodactyl.dev}
       
   database:
-    image: 'mariadb:10.5'
+    image: 'mariadb:latest'
     environment:
       # Below are MariaDB specific EMV VARS.
       - MARIADB_ROOT_PASSWORD=${SERVICE_PASSWORD_DATABASE}
